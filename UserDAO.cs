@@ -58,7 +58,7 @@ namespace bth6
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = @"DELETE FROM UserInfo(UserName,Password,FirstName,LastName,Email,Gender,Address) WHERE VALUE UserName = @username";
+                string sql = @"DELETE FROM UserInfo(UserName,Password,FirstName,LastName,Email,Gender,Address) WHERE UserName = @username";
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@username", user.UserName);
                 cmd.Parameters.AddWithValue("@password", user.Password);
