@@ -15,7 +15,7 @@ namespace bth6
             if (!IsPostBack)
             {
                 LayDuLieuVaoGridView();
-                /*GridView1.DataSource = listUser;
+               /* GridView1.DataSource = listUser;
                 this.DataBind();*/
             }
         }
@@ -83,15 +83,34 @@ namespace bth6
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            User us = LayDuLieuTuForm();
-            if (CheckUser(us) != -1 ) 
+            User user = LayDuLieuTuForm();
+            UserDAO userDAO = new UserDAO();
+            bool exist = userDAO.checkUser(user.UserName);
+            if (!exist)
             {
-                listUser.RemoveAt(CheckUser(us));
-                GridView1.DataSource = listUser;
-                GridView1.DataBind(); 
+                lblMessage.Text = "Username khong ton tai";
             }
             else
-                lblMessage.Text = "không có dữ liệu";
+            {
+                bool result = userDAO.Remove(user);
+                if (result)
+                {
+                    lblMessage.Text = " thanh cong";
+                }
+                else
+                {
+                    lblMessage.Text = "Co loi. Vui long thu lai sau";
+                }
+            }
+            /* User us = LayDuLieuTuForm();
+             if (CheckUser(us) != -1 ) 
+             {
+                 listUser.RemoveAt(CheckUser(us));
+                 GridView1.DataSource = listUser;
+                 GridView1.DataBind(); 
+             }
+             else
+                 lblMessage.Text = "không có dữ liệu";*/
         }
 
         protected void btnClear_Click(object sender, EventArgs e)
