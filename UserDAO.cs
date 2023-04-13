@@ -51,7 +51,7 @@ namespace bth6
                 cmd.Parameters.AddWithValue("@address", user.Address);
                 connection.Open();
                 int result = cmd.ExecuteNonQuery();
-                return (result >= 1);
+                return (result >=  1);
             }
         }
         public bool Remove(User user)
