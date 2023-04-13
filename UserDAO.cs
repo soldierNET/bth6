@@ -58,17 +58,12 @@ namespace bth6
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = @"DELETE FROM UserInfo(UserName,Password,FirstName,LastName,Email,Gender,Address) WHERE UserName = @username";
+                string sql = @"DELETE FROM [dbo].[UserInfo] WHERE UserName = @username";
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@username", user.UserName);
-                cmd.Parameters.AddWithValue("@password", user.Password);
-                cmd.Parameters.AddWithValue("@firstname", user.FirstName);
-                cmd.Parameters.AddWithValue("@lastname", user.LastName);
-                cmd.Parameters.AddWithValue("@email", user.Email);
-                cmd.Parameters.AddWithValue("@gender", user.Gender);
-                cmd.Parameters.AddWithValue("@address", user.Address);
                 connection.Open();
-                int result = cmd.ExecuteNonQuery();
+                int result = (int)cmd.ExecuteNonQuery();
+                connection.Close();
                 return (result >= 1);
             }
         }
