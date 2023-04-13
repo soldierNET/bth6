@@ -131,5 +131,41 @@ namespace bth6
             GridView1.DataSource = userDAO.GetAllUsers();
             GridView1.DataBind();
         }
+        public void DoDuLieuLenForm(User user)
+        {
+            txtFirstName.Text = user.FirstName;
+            txtLastName.Text = user.LastName;
+            txtEmail.Text = user.Email;
+            rblGender.SelectedIndex = user.Gender ? 0 : 1;
+            txtAddress.Text = (user.Address != null) ? user.Address : "";
+            txtUserName.Text = user.UserName;
+            txtPassword.Text = user.Password;
+        }
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string username = GridView1.SelectedRow.Cells[2].Text;
+            UserDAO userDAO = new UserDAO(); 
+            User user= userDAO.GetUser(username);
+            if (user == null)
+                return;
+
+            DoDuLieuLenForm(user);
+        }
+
+        protected void btnUpDate_Click(object sender, EventArgs e)
+        {
+            User user = LayDuLieuTuForm();
+            UserDAO userDAO = new UserDAO();
+            bool result = userDAO.Update(user);
+            if (result)
+            {
+                lblMessage.Text = "Cap nhat thanh cong";
+                LayDuLieuVaoGridView();
+            }
+            else
+            {
+                 lblMessage.Text = "Co loi. Vui long kiem tra lai";
+            }
+        }
     }
 }

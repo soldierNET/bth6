@@ -101,6 +101,8 @@
                         <asp:Button ID="btnSave" runat="server" Text="Lưu" OnClick="btnSave_Click" /></td>
                     <td class="auto-style2">
                         <asp:Button ID="btnDelete" runat="server" Text="Xoá" OnClick="btnDelete_Click" /></td>
+                     <td class="auto-style2">
+                        <asp:Button ID="btnUpDate" runat="server" Text="Cập Nhật" OnClick="btnUpDate_Click" /></td>
                     <td class="auto-style2">
                         <asp:Button ID="btnClear" runat="server" Text="Xoá trống form" OnClick="btnClear_Click" /></td>
                 </tr>
@@ -108,7 +110,12 @@
         </div>
         <div>
             <asp:Label ID="lblMessage" runat="server" Text="Thông báo"></asp:Label>
-            <asp:GridView ID="GridView1" runat="server"></asp:GridView>
+            <asp:GridView ID="GridView1" runat="server" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+                <Columns>
+                    <asp:CommandField ShowDeleteButton="True" />
+                    <asp:CommandField ShowSelectButton="True" />
+                </Columns>
+            </asp:GridView>
         </div>
     </form>
 </body>

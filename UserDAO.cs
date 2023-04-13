@@ -67,6 +67,7 @@ namespace bth6
                 return (result >= 1);
             }
         }
+        
         public DataTable GetAllUsers()
         {
             string queryString = @"SELECT * FROM [dbo].[UserInfo]";
@@ -74,6 +75,49 @@ namespace bth6
             DataTable dataTable = new DataTable();
             adapter.Fill(dataTable);
             return dataTable;
+        }
+        public User GetUser(string username)
+        {
+            string queryString = @"SELECT * FROM [dbo].[UserInfo] WHERE Username = @usn";
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@usn", username);
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                return new User(reader["FirstName"].ToString(),
+                    reader["LastName"].ToString(),
+                    reader["Email"].ToString(),
+                    (bool)reader["Gender"],
+                    reader["Address"].ToString(),
+                    reader["Username"].ToString(),
+                    reader["Password"].ToString()
+                    );
+            }
+            connection.Close();
+            return null;
+        }
+        public bool Update(User user)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = @"UPDATE [dbo].[UserInfo] SET Id=@id, UserName=@username, Password=@password, FirstName@firstname,
+                                            LastName=@lastname, Email=@email, Gender=@gender, Address=@address)";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@id", count() + 1);
+                cmd.Parameters.AddWithValue("@username", user.UserName);
+                cmd.Parameters.AddWithValue("@password", user.Password);
+                cmd.Parameters.AddWithValue("@firstname", user.FirstName);
+                cmd.Parameters.AddWithValue("@lastname", user.LastName);
+                cmd.Parameters.AddWithValue("@email", user.Email);
+                cmd.Parameters.AddWithValue("@gender", user.Gender);
+                cmd.Parameters.AddWithValue("@address", user.Address);
+                connection.Open();
+                int result = (int)cmd.ExecuteNonQuery();
+                return (result >= 1);
+            }
         }
     }
 }
